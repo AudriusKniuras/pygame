@@ -2,13 +2,13 @@ import pygame
 import time
 
 class Block:
-    def __init__(self,x_pos,y_pos,width, screen, speed):
+    def __init__(self,x_pos,y_pos,width, screen, speed, mass):
         self.x_pos = x_pos
         self.y_pos = y_pos
         self.width = width
         self.screen = screen
         self.speed = speed
-        self.mass = 1
+        self.mass = mass
         self.rect = pygame.rect.Rect((self.x_pos,self.y_pos,self.width,self.width))
     
     def draw(self):
@@ -29,16 +29,16 @@ class Block:
 
     def bounce(self, other):
         sum_mass = self.mass + other.mass
-        new_speed = ((self.mass-other.mass)//sum_mass) * self.speed
-        new_speed += ((2 * other.mass)//sum_mass) * other.speed
+        new_speed = ((self.mass-other.mass)/sum_mass) * self.speed
+        new_speed += ((2 * other.mass)/sum_mass) * other.speed
 
         return new_speed
 
 
 screen = pygame.display.set_mode((800, 400))
 
-block_big = Block(400,300,100, screen, 1)
-block_small = Block(200,360,40,screen,0)
+block_big = Block(400,300,100, screen, 10, 200)
+block_small = Block(200,360,40,screen, 0, 100)
 
 screen.fill((0,0,0))
 block_small.draw()
@@ -61,10 +61,13 @@ while running:
     if (block_small.collide(block_big)):
         v1 = block_big.bounce(block_small)
         v2 = block_small.bounce(block_big)
-        block_small.speed = v2
-        block_big.speed = v1
+        print(v1)
+        print(v2)
+        block_small.speed = int(v2)
+        block_big.speed = int(v1)
         print('Collide')
 
+    print(f'v1: {block_small.speed}, v2: {block_big.speed}')
 
-    time.sleep(0.005)
+    time.sleep(0.01)
 
