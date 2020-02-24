@@ -15,9 +15,10 @@ class Block:
         pygame.draw.rect(self.screen, (255,255,255), self.rect)
     
     def move(self):
-        print(self.x_pos)
+        # print(self.x_pos)
         self.x_pos = self.x_pos - self.speed
-        self.rect.move_ip(-1, 0)
+        # self.rect.move_ip(-1, 0)
+        self.rect = pygame.rect.Rect((self.x_pos,self.y_pos,self.width,self.width))
         
     def collide(self, other):
         return not ( (self.x_pos + self.width < other.x_pos) 
@@ -27,10 +28,10 @@ class Block:
         #     print('collide')
 
     def bounce(self, other):
-        sum_mass = this.mass + other.mass
-        new_speed = ((this.mass-other.mass)/sum_mass) * this.speed
-        new_speed += ((2 * other.mass)/sum_mass) * other.speed
-        
+        sum_mass = self.mass + other.mass
+        new_speed = ((self.mass-other.mass)//sum_mass) * self.speed
+        new_speed += ((2 * other.mass)//sum_mass) * other.speed
+
         return new_speed
 
 
@@ -52,11 +53,18 @@ while running:
 
     block_big.move()
     block_big.draw()
+    block_small.move()
     block_small.draw()
+    
     pygame.display.update()
 
-    if block_small.collide(block_big):
-        print("Collide")
+    if (block_small.collide(block_big)):
+        v1 = block_big.bounce(block_small)
+        v2 = block_small.bounce(block_big)
+        block_small.speed = v2
+        block_big.speed = v1
+        print('Collide')
 
-    time.sleep(0.05)
+
+    time.sleep(0.005)
 
