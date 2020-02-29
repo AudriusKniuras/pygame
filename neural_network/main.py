@@ -16,7 +16,7 @@ import other_stuff
 
 
 
-p = perceptron.Perceptron()
+p = perceptron.Perceptron(3)
 points = []
 
 screen = pygame.display.set_mode((500, 500))
@@ -31,10 +31,6 @@ p2 = training.Point(screen, 1, other_stuff.line_function(1))
 pygame.draw.line(screen, (0,0,0), (p1.pixelX(),p1.pixelY()), (p2.pixelX(),p2.pixelY()))
 
 
-inputs = [-1, 0.5]
-guess = p.guess(inputs)
-print(guess)
-
 running = True
 
 while running:
@@ -42,8 +38,25 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
+    screen.fill((255,255,255))
     for point in points:
-        inputs = [point.x, point.y]
+        color = (255, 0, 0)
+        inputs = [point.x, point.y, point.bias]
+        target = point.label
+        guess = p.guess(inputs)
+        if guess == target:
+            color = (0, 255, 0)
+        point.show(color)
+    pygame.display.update()
+    
+    p1 = training.Point(screen, -1, other_stuff.line_function(-1))
+    p2 = training.Point(screen, 1, other_stuff.line_function(1))
+    pygame.draw.line(screen, (0,0,0), (p1.pixelX(),p1.pixelY()), (p2.pixelX(),p2.pixelY()))
+
+    for point in points:
+        
+
+        inputs = [point.x, point.y, point.bias]
         target = point.label
 
         # target is the known answer
@@ -53,13 +66,16 @@ while running:
         guess = p.guess(inputs)
         if guess == target:
             color = (0, 255, 0)
-        
-        
-        # pygame.gfxdraw.filled_circle(screen, point.x, point.y, 4, color)
-        pygame.gfxdraw.filled_circle(screen, point.pixelX(), point.pixelY(), 4, color)
-        
-        # pygame.time.wait(3)
+        point.show(color)
+
+        # get new points for the line, to see where the line is now
+        p1 = training.Point(screen, -1, p.guessY(-1))
+        p2 = training.Point(screen, 1, p.guessY(1))
+
+        pygame.draw.line(screen, (0,0,0), (p1.pixelX(),p1.pixelY()), (p2.pixelX(),p2.pixelY()))
+        pygame.time.wait(3)
         pygame.display.update()
 
-
     pygame.display.update()
+
+    

@@ -5,4 +5,4 @@ def affine_transformation(x, a, b, c, d):
     return int(y)
 
 def line_function(x):
-    return -0.3*x + 0.2
+    return round(0.3*x - 0.2, 2)

@@ -8,6 +8,7 @@ class Point:
     def __init__(self, screen, x=None, y=None):
         self.screen = screen
         self.bias = 1
+
         # self.x = random.randint(0, screen.get_width())
         # self.y = random.randint(0, screen.get_height())
         if x is None and y is None:
@@ -33,15 +34,15 @@ class Point:
         transformed_y = other_stuff.affine_transformation(self.y, -1, 1, self.screen.get_height(), 0)
         return transformed_y
 
-    def show(self):
+    def show(self, color = (0,0,0)):
         if self.label == 1:
             # pygame.gfxdraw.aacircle(self.screen, self.x, self.y, 4, (0,0,0))
-            
-            pygame.gfxdraw.aacircle(self.screen, self.pixelX(), self.pixelY(), 4, (0,0,0))
+            pygame.gfxdraw.aacircle(self.screen, self.pixelX(), self.pixelY(), 4, color)
+            # pygame.draw.circle(self.screen, color, (self.pixelX(), self.pixelY()), 5, 1)
 
         elif self.label == -1:
             # pygame.gfxdraw.aacircle(self.screen, self.x, self.y, 4, (0,0,0))
             # pygame.gfxdraw.filled_circle(self.screen, self.x, self.y, 4, (0,0,0))
             pygame.gfxdraw.aacircle(self.screen, self.pixelX(), self.pixelY(), 4, (0,0,0))
-            pygame.gfxdraw.filled_circle(self.screen, self.pixelX(), self.pixelY(), 4, (0,0,0))
+            pygame.gfxdraw.filled_circle(self.screen, self.pixelX(), self.pixelY(), 4, color)
 

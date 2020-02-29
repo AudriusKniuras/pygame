@@ -10,12 +10,14 @@ def sign(n):
 
 class Perceptron:
     weights = []
-    learning_rate = 0.1
+    learning_rate = 0.005
 
-    def __init__(self):
-        for i in range(2):
+    def __init__(self, weights_length):
+        # length-1, because the last weight is a bias, not random
+        for i in range(weights_length-1):
             self.weights.append(round(random.uniform(-1,1), 2))
-        # self.weights.append
+        # append bias - 1
+        self.weights.append(1)
     
     def guess(self, inputs):
         sum = 0
@@ -32,3 +34,17 @@ class Perceptron:
         error = target - guess
         for i, weight in enumerate(self.weights):
             self.weights[i] += error * inputs[i] * self.learning_rate
+
+    def guessY(self, x):
+        # line formula => mx+b
+        # m - line slope, b - Y axis interception
+        # m = self.weights[0] / self.weights[1]
+        # b = self.weights[2]
+        # return m*x+b
+        w0 = self.weights[0]
+        w1 = self.weights[1]
+        w2 = self.weights[2]
+
+        return round(-(w2/w1) - (w0/w1) * x, 2)
+
+        
