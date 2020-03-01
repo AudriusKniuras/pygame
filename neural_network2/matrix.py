@@ -6,6 +6,8 @@ import math
 def multiply(m1, m2):
     if m1.cols != m2.rows:
         print('Matrix mismatch when multiplying')
+        print(f'm1 cols: {m1.cols}, m1 rows: {m1.rows}')
+        print(f'm2 cols: {m2.cols}, m2 rows: {m2.rows}')
         return False
     result = Matrix(m1.rows, m2.cols)
 
@@ -42,6 +44,15 @@ def transpose(a):
             result.matrix[j][i] += a.matrix[i][j]
     return result
 
+def map(m, func):
+    result = Matrix(m.rows, m.cols)
+
+    for i in range(m.rows):
+        for j in range(m.cols):
+            val = m.matrix[i][j]
+            result.matrix[i][j] = func(val)
+    return result
+
 class Matrix():
 
     def __init__(self, rows, cols):
@@ -59,15 +70,17 @@ class Matrix():
             for j in range(self.cols):
                 self.matrix[i][j] = round(random.uniform(-1,1), 2)
 
-
-
-
-
     def multiply(self, n):
-        # perform a scalar operations - multiply by a value, or add a value
-        for i in range(self.rows):
-            for j in range(self.cols):
-                self.matrix[i][j] *= n
+        if type(n) is Matrix:
+            # hadamard product
+            for i in range(self.rows):
+                for j in range(self.cols):
+                    self.matrix[i][j] *= n.matrix[i][j]
+        else:
+            # perform a scalar operations - multiply by a value, or add a value
+            for i in range(self.rows):
+                for j in range(self.cols):
+                    self.matrix[i][j] *= n
 
     def map(self, func):
         # apply a function to every element
