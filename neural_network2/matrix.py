@@ -26,6 +26,21 @@ def fromArray(arr):
 
     return m
 
+def subtract(a, b):
+    result = Matrix(a.rows, a.cols)
+
+    for i in range(a.rows):
+        for j in range(a.cols):
+            result.matrix[i][j] = a.matrix[i][j] - b.matrix[i][j]
+    
+    return result
+
+def transpose(a):
+    result = Matrix(a.cols, a.rows)
+    for i in range(a.rows):
+        for j in range(a.cols):
+            result.matrix[j][i] += a.matrix[i][j]
+    return result
 
 class Matrix():
 
@@ -44,12 +59,7 @@ class Matrix():
             for j in range(self.cols):
                 self.matrix[i][j] = round(random.uniform(-1,1), 2)
 
-    def transpose(self):
-        result = Matrix(self.cols, self.rows)
-        for i in range(self.rows):
-            for j in range(self.cols):
-                result.matrix[j][i] += self.matrix[i][j]
-        return result
+
 
 
 

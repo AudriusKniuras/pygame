@@ -39,3 +39,21 @@ class NeuralNetwork():
         output.map(sigmoid)
 
         return output.toArray()
+
+    def train(self, inputs, targets):
+        outputs = self.feedforward(inputs)
+        
+        outputs = matrix.fromArray(outputs)
+        targets = matrix.fromArray(targets)
+
+        output_errors = matrix.subtract(targets, outputs)
+
+        # after output errors are calculated, they are backpropagated to hidden layers for hidden layer error calculation
+        weights_ho_t = matrix.transpose(self.weights_ho)
+        hidden_errors = matrix.multiply(weights_ho_t, output_errors)
+
+
+        # outputs.print()
+        # targets.print()
+
+        # error.print()
