@@ -10,8 +10,8 @@ def calculateFitness(birds_arr):
         # noramlize fitness values
         bird.fitness = bird.score / sum
 
-def pickOne():
-    child = random.choice(saved_bird)
+def pickOne(saved_birds):
+    child = random.choice(saved_birds)
     return child
 
 
@@ -20,4 +20,6 @@ def nextGeneration(screen, birds_arr, pop, saved_birds):
     calculateFitness()
     for i in range(pop):
         birds_arr.append(pickOne(saved_birds))
+    
+    saved_birds = []
     return birds_arr

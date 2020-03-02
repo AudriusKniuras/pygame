@@ -77,4 +77,6 @@ class Bird():
             self.velocity = 0
         self.velocity += self.lift
     # TODO mutations and other stuff
+    
     def mutate(self):
+        self.brain.mutate(0.1)

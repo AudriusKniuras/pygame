@@ -43,6 +43,7 @@ while running:
 
     if len(birds) == 0:
         birds = ga.nextGeneration(screen, birds, POPULATION, saved_birds)
+        saved_birds = []
 
         
     for bird in birds:
