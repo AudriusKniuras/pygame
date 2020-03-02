@@ -1,11 +1,16 @@
 import pygame
-import bird, pipe
+import bird, pipe, ga
 
 
 screen = pygame.display.set_mode((600, 600))
 screen.fill((0,0,0))
 
-bird = bird.Bird(screen)
+POPULATION = 150
+birds = []
+saved_birds = []
+for i in range(POPULATION):
+    birds.append(bird.Bird(screen))
+
 pipes = []
 pipes.append(pipe.Pipe(screen))
 
@@ -25,18 +30,26 @@ while running:
 
     screen.fill((0,0,0))
 
-    for p in pipes:
+    for p in reversed(pipes):
         p.show()
         p.update()
         
-        p.hit(bird)
+        for b in birds:
+            if p.hit(b):
+                saved_birds.append(b)
+                birds.remove(b)
+
+
+
+    if len(birds) == 0:
+        birds = ga.nextGeneration(screen, birds, POPULATION, saved_birds)
 
         
+    for bird in birds:
+        bird.think(pipes)
+        bird.update()
+        bird.show()
         
-
-    bird.think()
-    bird.show()
-    bird.update()
 
     ticks = pygame.time.get_ticks()
     if ticks > thousands_ticks:

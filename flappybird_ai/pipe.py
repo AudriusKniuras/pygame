@@ -8,8 +8,11 @@ class Pipe():
         self.height = screen.get_height()
         self.top = int(random.random() * self.height / 2)
         self.bottom = int(random.random() * self.height / 2)
+        if (self.bottom + self.top) > (self.height - 100):
+            self.bottom -= 50
+            self.top -= 50
 
-        self.pipe_width = 40
+        self.pipe_width = 15
         self.speed = 3
         # starts at the edge of the screen
         self.x = self.width
