@@ -6,7 +6,7 @@ sys.path.append(r'C:\Users\audrius.kniuras\OneDrive - R1\Python\pygame\neural_ne
 import nn
 
 class Bird():
-    def __init__(self, screen):
+    def __init__(self, screen, brain = None):
         self.screen = screen
         self.height = screen.get_height()
         self.width = screen.get_width()
@@ -19,12 +19,17 @@ class Bird():
         self.lift = -5
 
         # AI stuff
-        # inputs - 4 (y of bird; x of pipe's left edge, y of bottom pipe, y of top pipe)
-        # hidden layer - 4 (random), output - 1 (number between 0 and 1; more than 0.5 => jump)
-        self.brain = nn.NeuralNetwork(4,4,1)
         self.score = 0
         # probability to be picked in the next generation
         self.fitness = 0
+
+        if brain is not None:
+            self.brain = brain.copy()
+        else:
+            # if Bird is initialised without neural network, make a new NN
+            # inputs - 4 (y of bird; x of pipe's left edge, y of bottom pipe, y of top pipe)
+            # hidden layer - 4 (random), output - 1 (number between 0 and 1; more than 0.5 => jump)
+            self.brain = nn.NeuralNetwork(4,4,1)
     
     def show(self):
         pygame.draw.circle(self.screen, (255,255,255), (int(self.x), int(self.y)), 16)
@@ -48,7 +53,7 @@ class Bird():
         inputs.append(closest_pipe.x / self.width)
 
         output = self.brain.predict(inputs)
-        print(output)
+        # print(output)
 
         if output[0] > 0.5:
             self.up()
@@ -77,6 +82,6 @@ class Bird():
             self.velocity = 0
         self.velocity += self.lift
     # TODO mutations and other stuff
-    
+
     def mutate(self):
         self.brain.mutate(0.1)
